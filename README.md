@@ -6,7 +6,7 @@ Integrantes: Daniela Gonzalez, Micaela Cafardo.
 
 Fecha de Entrega: 20/9/25, 00:00hs
 
-Enlace al Repositorio de GitHub: https://github.com/DanielaMaiteGonzalez/TrabajoIntegradorparte1/tree/main
+Enlace al Repositorio de GitHub: (https://github.com/micaelacafardo/GRUPO-30-ESTR-DATOS)
 
 Entrega 1: Modelado de Clases y Encapsulamiento
 
