@@ -14,13 +14,14 @@ Entrega 1: Modelado de Clases y Encapsulamiento
    
 El presente documento detalla el diseño y la implementación inicial de un sistema de cliente de correo electrónico, desarrollado en Python utilizando POO. Esta primera entrega se centra en el modelado de las clases fundamentales del sistema (Usuario, Mensaje, Carpeta, ServidorCorreo), asegurando el encapsulamiento de sus atributos y la implementación de interfaces básicas para la gestión de mensajes.
 
-3. Diagrama de Clases (UML)
+2. Diagrama de Clases (UML)
 A continuación, se presenta un diagrama de clases UML que ilustra la estructura de las clases principales, sus atributos, métodos y las relaciones entre ellas.
 
 [ diagrama de clases UML que ilustra la estructura de las clases principales](DiagramaUML.png)
 
 3. Justificación de Decisiones de Diseño
 En esta sección, se explican las principales decisiones tomadas durante el modelado de las clases y la implementación del encapsulamiento, así como el uso de estructuras de datos específicas.
+
 
 3. a. Clases Principales y su Responsabilidad
 
