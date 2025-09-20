@@ -1,15 +1,20 @@
 Título del Trabajo: Cliente de Correo Electrónico (Email Client)
+
 Grupo: 30
+
 Integrantes: Daniela Gonzalez, Micaela Cafardo.
+
 Fecha de Entrega: 20/9/25, 00:00hs
+
 Enlace al Repositorio de GitHub: https://github.com/DanielaMaiteGonzalez/TrabajoIntegradorparte1/tree/main
 
 Entrega 1: Modelado de Clases y Encapsulamiento
 
 1. Introducción
+   
 El presente documento detalla el diseño y la implementación inicial de un sistema de cliente de correo electrónico, desarrollado en Python utilizando POO. Esta primera entrega se centra en el modelado de las clases fundamentales del sistema (Usuario, Mensaje, Carpeta, ServidorCorreo), asegurando el encapsulamiento de sus atributos y la implementación de interfaces básicas para la gestión de mensajes.
 
-2. Diagrama de Clases (UML)
+3. Diagrama de Clases (UML)
 A continuación, se presenta un diagrama de clases UML que ilustra la estructura de las clases principales, sus atributos, métodos y las relaciones entre ellas.
 
 [ diagrama de clases UML que ilustra la estructura de las clases principales](DiagramaUML.png)
