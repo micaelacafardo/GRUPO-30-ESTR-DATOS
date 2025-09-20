@@ -12,7 +12,7 @@ El presente documento detalla el diseño y la implementación inicial de un sist
 2. Diagrama de Clases (UML)
 A continuación, se presenta un diagrama de clases UML que ilustra la estructura de las clases principales, sus atributos, métodos y las relaciones entre ellas.
 
-[presenta un diagrama de clases UML que ilustra la estructura de las clases principales](imagen.png)
+[ diagrama de clases UML que ilustra la estructura de las clases principales](DiagramaUML.png)
 
 3. Justificación de Decisiones de Diseño
 En esta sección, se explican las principales decisiones tomadas durante el modelado de las clases y la implementación del encapsulamiento, así como el uso de estructuras de datos específicas.
