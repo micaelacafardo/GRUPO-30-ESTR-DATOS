@@ -4,7 +4,8 @@ Grupo: 30
 
 Integrantes: Daniela Gonzalez, Micaela Cafardo.
 
-Fecha de Entrega: 20/9/25, 00:00hs
+Fecha de Entrega: 20/9/25, 00:00hs (primer entrega)
+                  11/10/25 22:50 (segunda entrega)
 
 Enlace al Repositorio de GitHub: (https://github.com/micaelacafardo/GRUPO-30-ESTR-DATOS)
 
