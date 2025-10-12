@@ -28,6 +28,185 @@ class Mensaje:
     def cuerpo(self):
         return self._cuerpo
 
+   --- ENTREGA 2 ---
+       --- CLASE USUARIO (MODIFICADA PARA EL ÁRBOL) ---
+       class Carpeta:
+    def __init__(self, nombre, padre=None):
+        self._nombre = nombre
+        self._mensajes = []
+        self._subcarpetas: list['Carpeta'] = [] # Lista de nodos hijos
+        self._padre: 'Carpeta' | None = padre
+    
+    # Métodos de Gestión de Jerarquía
+    def agregar_subcarpeta(self, nombre_subcarpeta):
+        """Agrega una nueva subcarpeta a la lista de hijos."""
+        nueva_carpeta = Carpeta(nombre_subcarpeta, padre=self)
+        self._subcarpetas.append(nueva_carpeta)
+        return nueva_carpeta
+
+    def buscar_carpeta_recursivo(self, nombre_buscado: str) -> 'Carpeta' | None:
+        """Busca una carpeta por nombre en la jerarquía (Pre-orden)."""
+        if self._nombre == nombre_buscado:
+            return self
+        
+        for sub in self._subcarpetas:
+            resultado = sub.buscar_carpeta_recursivo(nombre_buscado)
+            if resultado:
+                return resultado
+        return None
+
+    # Método de Mover Mensajes (Implica búsqueda y modificación)
+    def mover_mensaje(self, mensaje: Mensaje, destino: 'Carpeta') -> bool:
+        """Mueve un mensaje de esta carpeta a una carpeta destino."""
+        if self.eliminar_mensaje(mensaje):
+            destino.agregar_mensaje(mensaje)
+            return True
+        return False # El mensaje no estaba en esta carpeta
+
+    # Búsqueda Recursiva de Mensajes
+    def buscar_mensajes_recursivo(self, criterio: str, valor: str) -> list[Mensaje]:
+        """
+        Busca mensajes en esta carpeta y sus subcarpetas por Asunto o Remitente.
+        Retorna la lista de Mensajes encontrados (DFS/Pre-orden).
+        """
+        mensajes_encontrados = []
+        
+        # 1. Buscar en la carpeta actual
+        for msg in self._mensajes:
+            cumple_criterio = False
+            if criterio.lower() == "asunto" and valor.lower() in msg.asunto.lower():
+                cumple_criterio = True
+            elif criterio.lower() == "remitente" and valor.lower() in msg.remitente.lower():
+                cumple_criterio = True
+            
+            if cumple_criterio:
+                mensajes_encontrados.append(msg)
+                
+        # 2. Buscar recursivamente en subcarpetas
+        for sub in self._subcarpetas:
+            mensajes_encontrados.extend(
+                sub.buscar_mensajes_recursivo(criterio, valor)
+            )
+            
+        return mensajes_encontrados
+    
+    # Métodos base
+    def agregar_mensaje(self, mensaje: Mensaje):
+        self._mensajes.append(mensaje)
+        
+    def eliminar_mensaje(self, mensaje: Mensaje):
+        try:
+            self._mensajes.remove(mensaje)
+            return True
+        except ValueError:
+            return False
+
+    def listar_mensajes(self):
+        return self._mensajes
+
+    @property
+    def nombre(self):
+        return self._nombre
+    
+    @property
+    def subcarpetas(self):
+        return self._subcarpetas
+
+    def __len__(self):
+        return len(self._mensajes)
+    
+    def __str__(self):
+        return self._nombre
+
+# --- CLASE USUARIO (MODIFICADA PARA EL ÁRBOL) ---
+class Usuario: 
+    def __init__(self, email, nombre, contrasena):
+        self._email = email
+        self._nombre = nombre
+        self._contrasena = contrasena 
+        # Bandeja de Entrada es la raíz del árbol de carpetas del usuario
+        self._bandeja_entrada = Carpeta("Bandeja de Entrada") 
+        self._bandeja_salida = Carpeta("Enviados")
+        self._bandeja_entrada.agregar_subcarpeta("Importante")
+        self._bandeja_entrada.agregar_subcarpeta("Trabajo")
+        
+        # Agregamos una subcarpeta anidada para la simulación
+        self._bandeja_entrada.buscar_carpeta_recursivo("Trabajo").agregar_subcarpeta("Proyectos")
+        
+    # ... (Resto de métodos) ...
+    # Requerimos un método para acceder a la raíz del árbol de carpetas.
+    def get_bandeja_entrada(self):
+        return self._bandeja_entrada
+    
+    # ... (Resto de métodos, ServidorCorreo, etc., se asume que funcionan igual) ...
+    # El resto de las clases y el setup inicial del código del usuario se mantiene igual
+    
+    # --- SETUP INICIAL (Proporcionado por el usuario) ---
+# ... (Clases Mensaje, Usuario, ServidorCorreo) ...
+
+servidor = []
+usuario1 = Usuario("ana@correo.com", "Ana García", "pass123") 
+usuario2 = Usuario("juan@correo.com", "Juan Pérez", "pass456")
+servidor.registrar_usuario(usuario1) 
+servidor.registrar_usuario(usuario2)
+
+# Ana envía 3 mensajes
+usuario1.enviar_mensaje(servidor, "juan@correo.com", "Urgente: reunión de las 10am", "No te olvides de la reunión.")
+usuario1.enviar_mensaje(servidor, "juan@correo.com", "Re: Proyecto X - Reporte", "Aquí está el informe final.")
+usuario1.enviar_mensaje(servidor, "juan@correo.com", "Oferta especial de vacaciones", "No te pierdas este descuento.")
+
+servidor.entregar_mensajes_pendientes()
+
+# Juan tiene 3 mensajes en su Bandeja de Entrada
+bandeja_juan = usuario2.get_bandeja_entrada()
+mensajes_juan = bandeja_juan.listar_mensajes()
+msg_trabajo = mensajes_juan[1] # "Re: Proyecto X - Reporte"
+msg_spam = mensajes_juan[2] # "Oferta especial de vacaciones"
+
+print("\n--- Estado Inicial de la Bandeja de Juan ---")
+for i, msg in enumerate(mensajes_juan):
+    print(f"[{i+1}] {msg.asunto}")
+print(f"Subcarpetas: {[s.nombre for s in bandeja_juan.subcarpetas]}")
+print("="*60)
+
+# --- 1. Mover Mensaje (Usa búsqueda y eliminación) ---
+print("1. MOVER MENSAJE")
+carpeta_destino = bandeja_juan.buscar_carpeta_recursivo("Trabajo")
+
+if carpeta_destino:
+    # Mover el mensaje del Reporte de la Bandeja de Entrada a /Trabajo
+    if bandeja_juan.mover_mensaje(msg_trabajo, carpeta_destino):
+        print(f"Moviendo: '{msg_trabajo.asunto}'")
+        print(f"  -> DE: Bandeja de Entrada ({len(bandeja_juan)} msgs)")
+        print(f"  -> A: {carpeta_destino.nombre} ({len(carpeta_destino)} msgs)")
+        
+print("="*60)
+
+# --- 2. Búsqueda Recursiva por Asunto ---
+print("2. BÚSQUEDA RECURSIVA (Criterio: Asunto='Reunión')")
+# Movemos un mensaje de la bandeja de entrada a una carpeta más profunda
+carpeta_proyectos = bandeja_juan.buscar_carpeta_recursivo("Proyectos")
+carpeta_proyectos.agregar_mensaje(msg_spam) # Agregamos el spam a /Trabajo/Proyectos
+
+resultados_busqueda = bandeja_juan.buscar_mensajes_recursivo("asunto", "reunión")
+
+print(f"  Resultados encontrados en la jerarquía: {len(resultados_busqueda)}")
+for msg in resultados_busqueda:
+    print(f"  [ENCONTRADO] Asunto: {msg.asunto}")
+
+print("="*60)
+
+# --- 3. Búsqueda Recursiva por Remitente ---
+print("3. BÚSQUEDA RECURSIVA (Criterio: Remitente='ana')")
+resultados_remitente = bandeja_juan.buscar_mensajes_recursivo("remitente", "ana@")
+
+print(f"  Resultados encontrados en la jerarquía: {len(resultados_remitente)}")
+for msg in resultados_remitente:
+    print(f"  [ENCONTRADO] De: {msg.remitente}, Asunto: {msg.asunto}")
+
+print("="*60)
+
+
     @property
     def fecha(self):
         return self._fecha
