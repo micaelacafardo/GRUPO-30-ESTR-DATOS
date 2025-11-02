@@ -4,8 +4,9 @@ Grupo: 30
 
 Integrantes: Daniela Gonzalez, Micaela Cafardo.
 
-Fecha de Entrega: 20/9/25, 00:00hs (primer entrega)
+Fecha de Entrega: 20/9/25, 00:00hs (primera entrega)
                   11/10/25 22:50 (segunda entrega)
+                  1/11/25 00:00 (tercera entrega)
 
 Enlace al Repositorio de GitHub: (https://github.com/micaelacafardo/GRUPO-30-ESTR-DATOS)
 
@@ -18,7 +19,7 @@ El presente documento detalla el diseño y la implementación inicial de un sist
 2. Diagrama de Clases (UML)
 A continuación, se presenta un diagrama de clases UML que ilustra la estructura de las clases principales, sus atributos, métodos y las relaciones entre ellas.
 
-[ diagrama de clases UML que ilustra la estructura de las clases principales](DiagramaUML.png)
+[diagrama de clases UML que ilustra la estructura de las clases principales](DiagramaUML.png)
 
 3. Justificación de Decisiones de Diseño
 En esta sección, se explican las principales decisiones tomadas durante el modelado de las clases y la implementación del encapsulamiento, así como el uso de estructuras de datos específicas.
@@ -85,3 +86,146 @@ Justificación: Una lista de tuplas (destinatario, mensaje) es una forma de mant
 
 4. Conclusión
 El diseño presentado en esta primera entrega sienta una base sólida para el desarrollo completo del cliente de correo electrónico. El uso del encapsulamiento, las propiedades y una clara definición de responsabilidades para cada clase aseguran un código mantenible y extensible, preparando el terreno para las funcionalidades futuras.
+
+
+
+
+Entrega 2: Estructuras de Datos y Recursividad
+
+1. Introducción
+
+En esta segunda entrega del sistema de cliente de correo electrónico, se implementó una estructura jerárquica de carpetas (carpetas y subcarpetas) como árbol general, y se habilitaron operaciones recursivas para mover mensajes entre carpetas y hacer búsquedas profundas. El propósito es demostrar el uso de recursividad y estructuras de datos jerárquicas en un contexto práctico.
+
+2. Funcionalidades implementadas
+
+a. Árbol de carpetas
+
+La clase Carpeta representa un nodo del árbol que puede contener mensajes y varias subcarpetas (hijos). Se implementaron los siguientes métodos clave:
+
+agregar_subcarpeta(nombre_subcarpeta): crea una nueva subcarpeta dentro de la carpeta actual.
+
+buscar_carpeta_recursivo(nombre_buscado): recorre todo el árbol de carpetas (la carpeta actual y sus descendientes) para encontrar una carpeta con el nombre dado.
+
+mover_mensaje(mensaje, carpeta_destino): permite mover un mensaje de cualquier nivel de la jerarquía a una carpeta de destino, explorando recursivamente para localizar el mensaje.
+
+buscar_mensajes_recursivo(criterio, valor): busca mensajes en todas las carpetas de la jerarquía (criterio “asunto” o “remitente”), devolviendo los mensajes que coincidan.
+
+b. Uso de recursividad
+
+El recorrido del árbol de carpetas se implementa mediante llamadas recursivas para explorar todas las subcarpetas. Esto permite que la funcionalidad no quede limitada sólo al primer nivel de carpetas, sino que abarque profundidades arbitrarias.
+
+
+3. Análisis de eficiencia 
+
+la recursión implica una pila de llamadas que puede crecer proporcional al nivel de profundidad del árbol 
+Conclusión de eficiencia: Las operaciones recursivas permiten cubrir toda la jerarquía de carpetas correctamente, pero presentan complejidad lineal en relación al número de carpetas o mensajes en el peor caso. Esto es aceptable para un sistema de cliente de correo de tamaño moderado. 
+
+4. Casos límite considerados
+
+Si se busca una carpeta que no existe, buscar_carpeta_recursivo devuelve None y el sistema lo maneja sin excepción.
+
+Si se intenta mover un mensaje que no está presente en ninguna carpeta, mover_mensaje devuelve False, y no ocurre eliminación ni corrupción de datos.
+
+Si se realiza una búsqueda (buscar_mensajes_recursivo) y no encuentra coincidencias, devuelve una lista vacía.
+
+En estructuras de carpetas muy profundas, la recursión podría alcanzar gran profundidad.
+
+5. Infografía 
+
+Como material adicional, se ha elaborado una infografía que ilustra el árbol de carpetas (nodos, subcarpetas, carpetas raíz) y el flujo de una búsqueda/movimiento recursivo de un mensaje:
+
+[Infografía](Infografía.png)
+
+6. Conclusión
+
+La Entrega 2 cumple con los requisitos de manejar estructuras de datos jerárquicas (árbol de carpetas) y ejecutar operaciones recursivas fundamentales (mover y buscar mensajes). 
+
+
+
+
+Entrega 3: Algoritmos y Funcionalidades Avanzadas
+
+
+1. Introducción
+
+En esta tercera entrega se amplía la funcionalidad del cliente de correo electrónico mediante la incorporación de estructuras de datos y algoritmos avanzados.
+El objetivo es mejorar la organización, automatización y simulación de la red de correo, aplicando listas, diccionarios, colas de prioridad y grafos, junto con técnicas de recursividad y búsqueda.
+
+2. Funcionalidades implementadas
+a. Filtros automáticos (Listas y Diccionarios)
+
+Los filtros permiten que el usuario organice sus mensajes entrantes de forma automática según reglas definidas.
+Cada filtro asocia una palabra clave con una carpeta destino.
+
+Ejemplo:
+
+self._filtros = {"Factura": carpeta_finanzas, "Trabajo": carpeta_proyectos}
+
+
+Cuando llega un mensaje, el sistema busca si el asunto contiene alguna de las palabras clave. Si la encuentra, el mensaje se mueve automáticamente a la carpeta asignada.
+
+Estructura usada: Diccionario
+Complejidad: O(f), donde f es la cantidad de filtros definidos.
+
+b. Cola de prioridad (Heapq)
+
+Para gestionar mensajes urgentes, se implementó una cola de prioridad utilizando el módulo heapq de Python.
+Cada mensaje incluye un atributo prioridad, donde 1 representa mensajes urgentes.
+Esto permite procesar primero los mensajes más importantes con eficiencia logarítmica.
+
+Estructura usada: Heap (cola de prioridad)
+Complejidad: Inserción y extracción O(log n)
+
+c. Red de servidores de correo (Grafo + BFS)
+
+La red de servidores se modela como un grafo no dirigido, donde cada servidor es un nodo y las conexiones entre ellos son aristas.
+
+Para simular el envío de mensajes entre servidores, se implementa el algoritmo BFS, que encuentra la ruta más corta entre el servidor de origen y el de destino.
+
+
+d. Recursividad en carpetas
+
+Se mantuvo e integró la estructura de árbol general desarrollada en la entrega 2.
+La recursividad se utiliza para:
+
+Buscar mensajes (buscar_mensajes_recursivo)
+
+Mover mensajes (mover_mensaje)
+
+Localizar carpetas (buscar_carpeta_recursivo)
+
+Estos métodos recorren el árbol completo sin importar la profundidad, implementando un recorrido en profundidad 
+
+Complejidad: O(n), donde n es el número total de carpetas o mensajes explorados.
+
+3. Análisis de eficiencia
+
+El sistema combina distintas estructuras (diccionarios, heaps, grafos y árboles) para lograr un funcionamiento ágil y ordenado.
+Todas las operaciones tienen tiempos de ejecución lineales o logarítmicos, lo que asegura buen rendimiento y escalabilidad para el tamaño del proyecto.
+
+4. Casos límite considerados
+
+Situaciones y sus comportamientos esperados:
+
+Carpeta destino inexistente->	El método devuelve None sin error.
+Mensaje no encontrado->	El método mover_mensaje retorna False.
+Cola de prioridad vacía-> No se lanza excepción; no se procesan mensajes.
+Envío entre servidores no conectados -> BFS devuelve None.
+Filtro sin coincidencia-> El mensaje se mantiene en la bandeja de entrada.
+
+5. Síntesis explicando los algoritmos aplicados:
+
+Diccionarios: organización y acceso directo a filtros.
+Heap (cola de prioridad): obtención eficiente del mensaje más urgente.
+BFS en grafos: simulación del envío entre servidores con la ruta más corta.
+Recursividad en árboles: búsqueda y movimiento en profundidad de mensajes.
+
+6. Conclusión
+
+La Entrega 3 cumple con los requisitos de aplicar estructuras y algoritmos avanzados:
+Filtros automáticos (diccionarios y listas).
+Cola de prioridad (heapq).
+Red de servidores modelada como grafo (BFS).
+Recursividad consolidada en el manejo de carpetas.
+
+Estas implementaciones mejoran la eficiencia, automatización y escalabilidad del cliente de correo, integrando conceptos de POO y Estructuras de Datos.
