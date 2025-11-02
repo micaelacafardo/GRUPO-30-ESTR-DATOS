@@ -134,7 +134,7 @@ En estructuras de carpetas muy profundas, la recursión podría alcanzar gran pr
 
 Como material adicional, se ha elaborado una infografía que ilustra el árbol de carpetas (nodos, subcarpetas, carpetas raíz) y el flujo de una búsqueda/movimiento recursivo de un mensaje:
 
-[Infografía](infografia arboles.pdf)
+[Infografía](infografía.png)
 
 6. Conclusión
 
